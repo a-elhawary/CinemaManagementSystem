@@ -29,7 +29,7 @@ public class SingleMovie extends JPanel {
         JButton viewMovie = new JButton();
         viewMovie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         viewMovie.addActionListener(e -> {
-            parentScreen.navigateTo(new SingleMovieScreen(parentScreen.parentWindow, parentScreen, movie.id));
+            parentScreen.navigateTo(new SingleMovieScreen(parentScreen.parentWindow, parentScreen, movie));
         });
         viewMovie.setBackground(AppColors.primary);
         viewMovie.setForeground(Color.white);

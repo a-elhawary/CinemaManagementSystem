@@ -11,10 +11,10 @@ public class Hall extends Model{
     public int seatsNumber;
 
     public Hall(int id){
-        super("Hallse", id);
+        super("Halls", id);
         try{
             Connection c = Database.getCon();
-            PreparedStatement select = c.prepareStatement("select * from hall where id = ?");
+            PreparedStatement select = c.prepareStatement("select * from Halls where id = ?");
             select.setInt(1, this.id);
             ResultSet r = select.executeQuery();
             while (r.next()){
@@ -44,7 +44,7 @@ public class Hall extends Model{
         if(this.name.isEmpty()) return false;
         try{
             Connection c = Database.getCon();
-            PreparedStatement insert = c.prepareStatement("insert into halls Values (default, ?,?)");
+            PreparedStatement insert = c.prepareStatement("insert into Halls Values (default, ?,?)");
             insert.setString(1, name);
             insert.setInt(2, seatsNumber);
             insert.execute();
@@ -71,4 +71,22 @@ public class Hall extends Model{
         }
         return null;
     }
+    public static Hall getHallById(int id){
+        ArrayList<Hall> halls = new ArrayList<Hall>();
+        try {
+            Connection c = Database.getCon();
+            PreparedStatement s = c.prepareStatement("select * from Halls where id = ?");
+            s.setInt(1, id);
+            ResultSet r = s.executeQuery();
+            while(r.next()){
+                Hall currentHall = new Hall(r.getInt("id"), r.getString("name"), r.getInt("seats_number"));
+                halls.add(currentHall);
+            }
+            return halls.get(0);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

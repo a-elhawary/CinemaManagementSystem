@@ -1,25 +1,29 @@
 package GUI.Screens;
 
+import Cinema.Objects.Hall;
 import Cinema.Objects.Movie;
+import Cinema.Objects.Ticket;
+import Cinema.Objects.User;
 import GUI.AppColors;
 import GUI.Screen;
-import GUI.SharedComponents.AppBar;
-import GUI.SharedComponents.ImageHandler;
-import GUI.SharedComponents.Seat;
+import GUI.SharedComponents.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.sql.Date;
+import java.util.ArrayList;
 
 public class SingleMovieScreen extends Screen {
 
-    private int hallSize = 60;
-    private String names[] = {"A", "B", "C", "D"};
-    private double ratios[] = {6, 3, 6, 3};
-
-    public SingleMovieScreen(GUI.Window parentWindow, Screen previousScreen, int movieId){
+    Movie movie;
+    ArrayList<String> selectedSeats;
+    JPanel mainContainer;
+    JButton reserveSeatButton;
+    public SingleMovieScreen(GUI.Window parentWindow, Screen previousScreen, Movie movie){
         super(parentWindow, previousScreen);
-        Movie currentMovie = new Movie(movieId);
+        selectedSeats = new ArrayList<String>();
+        this.movie = movie;
         this.setLayout(new BorderLayout());
         JPanel topBar = new AppBar(this);
         JPanel sideBar = new JPanel();
@@ -27,14 +31,85 @@ public class SingleMovieScreen extends Screen {
         sideBar.setBackground(AppColors.grey);
         sideBar.setBorder(new EmptyBorder(20,20,20,20));
 
-        ImageIcon image = ImageHandler.scaleImage(new ImageIcon(currentMovie.imageData), (int)(GUI.Window.width * 0.2));
-        JLabel movieTitle = new JLabel(currentMovie.name);
+        ImageIcon image = ImageHandler.scaleImage(new ImageIcon(movie.imageData), (int)(GUI.Window.width * 0.2));
+        JLabel movieTitle = new JLabel(movie.name);
+        movieTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         movieTitle.setForeground(AppColors.primary);
         movieTitle.setIcon(image);
         movieTitle.setHorizontalTextPosition(JLabel.CENTER);
         movieTitle.setVerticalTextPosition(JLabel.BOTTOM);
 
+        DatePicker selectDate = new DatePicker("Date:", movie.startDate, movie.endDate);
+
+        JPanel showingPicker = new JPanel();
+        showingPicker.setLayout(new FlowLayout(FlowLayout.LEFT));
+        showingPicker.setBackground(null);
+        JLabel showingPickerLabel = new JLabel("Showing:");
+        showingPickerLabel.setForeground(AppColors.darkGrey);
+        String[] showings = {"1:30", "3:30", "6:30", "8:30", "10:30"};
+        JComboBox showingComboBox = new JComboBox(showings);
+        showingPicker.add(showingPickerLabel);
+        showingPicker.add(showingComboBox);
+
+        JPanel viewChart = new JPanel();
+        viewChart.setBackground(null);
+        viewChart.setLayout(new GridBagLayout());
+        JButton viewChartButton = new JButton("View Chart");
+        viewChartButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        viewChartButton.setBackground(AppColors.primary);
+        viewChartButton.setForeground(Color.white);
+        viewChartButton.setBorderPainted(false);
+        viewChartButton.setOpaque(true);
+        viewChartButton.addActionListener(e ->{
+            this.remove(mainContainer);
+            mainContainer = buildSeatChart(selectDate.getDate(), showingComboBox.getSelectedItem().toString());
+            this.add(mainContainer);
+            this.revalidate();
+            this.repaint();
+        });
+        viewChart.add(viewChartButton);
+
+        JPanel reserveSeat = new JPanel();
+        reserveSeat.setBackground(null);
+        reserveSeat.setLayout(new GridBagLayout());
+        reserveSeatButton = new JButton("Reserve Seat");
+        reserveSeatButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        reserveSeatButton.setBackground(AppColors.primary);
+        reserveSeatButton.setForeground(Color.white);
+        reserveSeatButton.setBorderPainted(false);
+        reserveSeatButton.setOpaque(true);
+        reserveSeatButton.setBackground(AppColors.grey);
+        reserveSeatButton.setEnabled(false);
+        reserveSeatButton.addActionListener(e ->{
+            for(String seat: selectedSeats){
+                double price = 0;
+                if(seat.charAt(0) == 'A' || seat.charAt(0) == 'C') price = 60;
+                else if(seat.charAt(0) == 'B') price = 80;
+                else price = 100;
+                Ticket ticket = new Ticket(User.loggedInUserId, seat, price, selectDate.getDate(), showingComboBox.getSelectedItem().toString());
+                ticket.save();
+            }
+        });
+        reserveSeat.add(reserveSeatButton);
+
         sideBar.add(movieTitle);
+        sideBar.add(selectDate);
+        sideBar.add(showingPicker);
+        sideBar.add(viewChart);
+        sideBar.add(reserveSeat);
+
+        mainContainer = buildSeatChart(selectDate.getDate(), showingComboBox.getSelectedItem().toString());
+
+        this.add(topBar, BorderLayout.NORTH);
+        this.add(sideBar, BorderLayout.WEST);
+        this.add(mainContainer, BorderLayout.CENTER);
+    }
+
+    public JPanel buildSeatChart(Date choosenDate,String choosenShowing){
+        ArrayList<Ticket> reservedSeats = Ticket.getTicketsBy(choosenDate, choosenShowing);
+        int hallSize = Hall.getHallById(movie.hallId).seatsNumber;
+        String names[] = {"A", "B", "C", "D"};
+        double ratios[] = {6, 3, 6, 3};
 
         JPanel mainContainer = new JPanel();
         mainContainer.setBackground(Color.white);
@@ -67,11 +142,34 @@ public class SingleMovieScreen extends Screen {
 
         for(int i = 0; i < seatsContainers.length; i++){
             for(int j = 0; j < hallSize / ratios[i]; j++){
+                String label = "";
+                boolean isReserved = false;
                 if(j < 10){
-                    seatsContainers[i].add(new Seat(names[i] + "0" + j));
+                    label = names[i] + "0" + j;
                 }else{
-                    seatsContainers[i].add(new Seat(names[i] + j));
+                    label = names[i] + j;
                 }
+                for(Ticket seat: reservedSeats){
+                    if(label.equals(seat.seat_number)){
+                       isReserved = true;
+                       break;
+                    }
+                }
+                seatsContainers[i].add(new Seat(label, isReserved, (label1, isSelected) -> {
+                    if(isSelected){
+                        selectedSeats.add(label1);
+                    }else{
+                        selectedSeats.remove(label1);
+                    }
+
+                    if(selectedSeats.size() == 0){
+                        reserveSeatButton.setBackground(AppColors.grey);
+                        reserveSeatButton.setEnabled(false);
+                    }else{
+                        reserveSeatButton.setBackground(AppColors.primary);
+                        reserveSeatButton.setEnabled(true);
+                    }
+                }));
             }
         }
         theatreContainer.add(screenDirection, BorderLayout.NORTH);
@@ -81,9 +179,6 @@ public class SingleMovieScreen extends Screen {
         theatreContainer.add(parents[3], BorderLayout.SOUTH);
 
         mainContainer.add(theatreContainer);
-
-        this.add(topBar, BorderLayout.NORTH);
-        this.add(sideBar, BorderLayout.WEST);
-        this.add(mainContainer, BorderLayout.CENTER);
+        return mainContainer;
     }
 }

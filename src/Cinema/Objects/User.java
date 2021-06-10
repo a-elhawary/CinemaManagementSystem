@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class User extends Model{
+    static public int loggedInUserId;
     static public Level loggedInUserLevel;
 
     public String firstName;
@@ -76,6 +77,7 @@ public class User extends Model{
             ResultSet r = s.executeQuery();
             while(r.next()){
                if(r.getString("password").equals(this.password)){
+                   loggedInUserId = r.getInt("id");
                    loggedInUserLevel = Level.values()[r.getInt("level")];
                    state = true;
                }
