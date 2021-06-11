@@ -12,10 +12,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdminScreen extends Screen {
+    JPanel panels[];
     public AdminScreen(Window parentWindow, Screen previousScreen) {
         super(parentWindow, previousScreen);
-        JPanel panels[] = {new ViewMoviesPanel(), new AddMoviesPanel(),new ViewCashiersPanel(), new AddCashierPanel(), new ViewHallsPanel(), new AddHallPanel()};
-        String actions[] = {"View Movies", "Add Movie", "View Cashiers", "Add Cashier", "View Halls", "Add Hall"};
+        JPanel tmp[] = {new ViewMoviesPanel(), new AddMoviesPanel(),new ViewCashiersPanel(), new AddCashierPanel(), new ViewHallsPanel(), new AddHallPanel(), new RequestReport()};
+        panels = tmp;
+        String actions[] = {"View Movies", "Add Movie", "View Cashiers", "Add Cashier", "View Halls", "Add Hall", "Request Report"};
 
         this.setLayout(new BorderLayout());
 
@@ -63,6 +65,10 @@ public class AdminScreen extends Screen {
         this.add(new AppBar(this), BorderLayout.NORTH);
         this.add(sideBar, BorderLayout.WEST);
         this.add(mainContainer, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void refresh() {
     }
 }
 

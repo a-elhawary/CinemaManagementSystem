@@ -20,6 +20,8 @@ public class SingleMovieScreen extends Screen {
     ArrayList<String> selectedSeats;
     JPanel mainContainer;
     JButton reserveSeatButton;
+    DatePicker selectDate;
+    JComboBox showingComboBox;
     public SingleMovieScreen(GUI.Window parentWindow, Screen previousScreen, Movie movie){
         super(parentWindow, previousScreen);
         selectedSeats = new ArrayList<String>();
@@ -39,7 +41,7 @@ public class SingleMovieScreen extends Screen {
         movieTitle.setHorizontalTextPosition(JLabel.CENTER);
         movieTitle.setVerticalTextPosition(JLabel.BOTTOM);
 
-        DatePicker selectDate = new DatePicker("Date:", movie.startDate, movie.endDate);
+        selectDate = new DatePicker("Date:", movie.startDate, movie.endDate);
 
         JPanel showingPicker = new JPanel();
         showingPicker.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -47,7 +49,7 @@ public class SingleMovieScreen extends Screen {
         JLabel showingPickerLabel = new JLabel("Showing:");
         showingPickerLabel.setForeground(AppColors.darkGrey);
         String[] showings = {"1:30", "3:30", "6:30", "8:30", "10:30"};
-        JComboBox showingComboBox = new JComboBox(showings);
+        showingComboBox = new JComboBox(showings);
         showingPicker.add(showingPickerLabel);
         showingPicker.add(showingComboBox);
 
@@ -61,11 +63,7 @@ public class SingleMovieScreen extends Screen {
         viewChartButton.setBorderPainted(false);
         viewChartButton.setOpaque(true);
         viewChartButton.addActionListener(e ->{
-            this.remove(mainContainer);
-            mainContainer = buildSeatChart(selectDate.getDate(), showingComboBox.getSelectedItem().toString());
-            this.add(mainContainer);
-            this.revalidate();
-            this.repaint();
+            this.refresh();
         });
         viewChart.add(viewChartButton);
 
@@ -81,14 +79,18 @@ public class SingleMovieScreen extends Screen {
         reserveSeatButton.setBackground(AppColors.grey);
         reserveSeatButton.setEnabled(false);
         reserveSeatButton.addActionListener(e ->{
+            double totalPrice = 0;
             for(String seat: selectedSeats){
                 double price = 0;
                 if(seat.charAt(0) == 'A' || seat.charAt(0) == 'C') price = 60;
                 else if(seat.charAt(0) == 'B') price = 80;
                 else price = 100;
-                Ticket ticket = new Ticket(User.loggedInUserId, seat, price, selectDate.getDate(), showingComboBox.getSelectedItem().toString());
+                totalPrice += price;
+                Ticket ticket = new Ticket(User.loggedInUserId, movie.id, seat, price, selectDate.getDate(), showingComboBox.getSelectedItem().toString());
                 ticket.save();
             }
+            this.refresh();
+            this.navigateTo(new ViewTicketScreen(this, movie, selectedSeats, totalPrice, selectDate.getDate() , showingComboBox.getSelectedItem().toString()));
         });
         reserveSeat.add(reserveSeatButton);
 
@@ -106,7 +108,7 @@ public class SingleMovieScreen extends Screen {
     }
 
     public JPanel buildSeatChart(Date choosenDate,String choosenShowing){
-        ArrayList<Ticket> reservedSeats = Ticket.getTicketsBy(choosenDate, choosenShowing);
+        ArrayList<Ticket> reservedSeats = Ticket.getTicketsBy(movie.id, choosenDate, choosenShowing);
         int hallSize = Hall.getHallById(movie.hallId).seatsNumber;
         String names[] = {"A", "B", "C", "D"};
         double ratios[] = {6, 3, 6, 3};
@@ -180,5 +182,14 @@ public class SingleMovieScreen extends Screen {
 
         mainContainer.add(theatreContainer);
         return mainContainer;
+    }
+
+    @Override
+    public void refresh() {
+        this.remove(mainContainer);
+        mainContainer = buildSeatChart(selectDate.getDate(), showingComboBox.getSelectedItem().toString());
+        this.add(mainContainer);
+        this.revalidate();
+        this.repaint();
     }
 }

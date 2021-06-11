@@ -91,4 +91,21 @@ public class Movie extends Model{
         }
         return null;
     }
+    public static Movie getMovieBy(int id){
+        ArrayList<Movie> movies = new ArrayList<Movie>();
+        try {
+            Connection c = Database.getCon();
+            PreparedStatement s = c.prepareStatement("select * from Movies where id = ?");
+            s.setInt(1, id);
+            ResultSet r = s.executeQuery();
+            while(r.next()){
+                Movie currentMovie = new Movie(r.getInt("id"), r.getString("name"), r.getString("description"),ImageIO.read(r.getBinaryStream("image")),r.getDouble("rating"), new Date(r.getDate("start_date").getTime()), new Date(r.getDate("end_date").getTime()), r.getInt("hall_id"));
+                movies.add(currentMovie);
+            }
+            return movies.get(0);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

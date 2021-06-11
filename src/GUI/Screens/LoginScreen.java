@@ -35,6 +35,12 @@ public class LoginScreen extends Screen {
         this.add(mainPanel, BorderLayout.CENTER);
     }
 
+    @Override
+    public void refresh() {
+        this.revalidate();
+        this.repaint();
+    }
+
     private JPanel buildLogin(JPanel parent){
         EmptyBorder border = new EmptyBorder(30,30, 30,30);
         JPanel loginContainer = new JPanel();

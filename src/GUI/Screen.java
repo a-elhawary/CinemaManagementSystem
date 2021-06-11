@@ -2,7 +2,7 @@ package GUI;
 
 import javax.swing.*;
 
-public class Screen extends JPanel {
+public abstract class Screen extends JPanel {
     public Window parentWindow;
     public Screen previousScreen;
 
@@ -14,4 +14,6 @@ public class Screen extends JPanel {
     public void navigateTo(Screen newScreen){
        parentWindow.swap(this, newScreen);
     }
+
+    public abstract void refresh();
 }

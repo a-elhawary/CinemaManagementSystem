@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Database {
-    private static final String DATABASE_HOST = "sql11.freesqldatabase.com";
-    private static final String DATABASE_NAME = "sql11418407";
+    private static final String DATABASE_HOST = "206.81.8.63";
+    private static final String DATABASE_NAME = "Cinema";
     private static final String DATABASE_PORT = "3306";
-    private static final String DATABASE_USER = "sql11418407";
-    private static final String DATABASE_PASS = "lFMq4wLQdK";
+    private static final String DATABASE_USER = "remote";
+    private static final String DATABASE_PASS = "gfIIb100%s";
 
     public static Connection getCon(){
        try {

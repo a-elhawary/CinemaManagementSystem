@@ -12,13 +12,21 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class HomeScreen extends Screen {
+    JPanel mainContent;
    public HomeScreen(GUI.Window parentWindow, Screen previousScreen){
        super(parentWindow, previousScreen);
-       ArrayList<Movie> moviesData = Movie.getMovies();
        this.setLayout(new BorderLayout());
 
        JPanel topBar = new AppBar(this);
 
+       mainContent = buildMainContainer();
+
+       this.add(topBar, BorderLayout.NORTH);
+       this.add(mainContent, BorderLayout.CENTER);
+   }
+
+   public JPanel buildMainContainer(){
+       ArrayList<Movie> moviesData = Movie.getMovies();
        JPanel mainContent = new JPanel();
        mainContent.setLayout(new BorderLayout());
        mainContent.setBorder(new EmptyBorder(10,10,10,10));
@@ -50,8 +58,15 @@ public class HomeScreen extends Screen {
        mainContent.add(titleLabel, BorderLayout.NORTH);
        mainContent.add(scroll, BorderLayout.CENTER);
        mainContent.setBackground(Color.white);
-       this.add(topBar, BorderLayout.NORTH);
+       return mainContent;
+   }
+
+   public void refresh(){
+       this.remove(mainContent);
+       mainContent = buildMainContainer();
        this.add(mainContent, BorderLayout.CENTER);
+       this.revalidate();
+       this.repaint();
    }
 }
 
