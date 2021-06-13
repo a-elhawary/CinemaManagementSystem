@@ -1,6 +1,6 @@
 package GUI.SharedComponents;
 
-import Cinema.Objects.Months;
+import cinema.helper.Months;
 import GUI.AppColors;
 
 import javax.swing.*;

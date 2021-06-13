@@ -1,4 +1,6 @@
-package Cinema.Objects;
+package cinema.helper;
+
+import cinema.exceptions.InvalidMonthNameException;
 
 import java.util.Calendar;
 

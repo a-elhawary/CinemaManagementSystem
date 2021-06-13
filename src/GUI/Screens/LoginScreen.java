@@ -1,11 +1,11 @@
 package GUI.Screens;
 
-import Cinema.Objects.Level;
+import cinema.enums.Level;
 import GUI.AppColors;
 import GUI.Screen;
 import GUI.SharedComponents.LabeledField;
 
-import Cinema.Objects.User;
+import cinema.model.User;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -61,10 +61,11 @@ public class LoginScreen extends Screen {
         loginButton.setText("Login");
         loginButton.addActionListener(e ->{
             User currentUser = new User(userNameField.textField.getText(), passwordField.textField.getText());
-            if(currentUser.login()){
+            try {
+                currentUser.login();
                 this.navigateTo(new HomeScreen(parentWindow, null));
-            }else{
-                errorLabel.setText("Incorrect Username or Password");
+            }catch (Exception error){
+                errorLabel.setText(error.getMessage());
             }
         });
         loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -128,11 +129,11 @@ public class LoginScreen extends Screen {
         registerButton.setText("Sign Up");
         registerButton.addActionListener(e ->{
             User currentUser = new User(firstNameField.textField.getText(), lastNameField.textField.getText(), registerUserNameField.textField.getText(), registerPasswordField.textField.getText(), registerConfirmPasswordField.textField.getText());
-            String errorMsg = currentUser.register(Level.CUSTOMER);
-            if(errorMsg.isEmpty()){
+            try{
+                currentUser.register(Level.CUSTOMER);
                 this.navigateTo(new HomeScreen(parentWindow, null));
-            }else{
-                errorLabel.setText(errorMsg);
+            }catch(Exception error){
+                errorLabel.setText(error.getMessage());
             }
         });
         registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

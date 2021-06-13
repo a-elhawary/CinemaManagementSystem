@@ -1,6 +1,6 @@
 package GUI.Screens.Admin;
 
-import Cinema.Objects.Hall;
+import cinema.model.Hall;
 import GUI.AppColors;
 import GUI.SharedComponents.SingleRow;
 

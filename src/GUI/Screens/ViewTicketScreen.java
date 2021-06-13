@@ -1,9 +1,9 @@
 package GUI.Screens;
 
-import Cinema.Objects.Level;
-import Cinema.Objects.Movie;
-import Cinema.Objects.Ticket;
-import Cinema.Objects.User;
+import cinema.enums.Level;
+import cinema.model.Movie;
+import cinema.model.Ticket;
+import cinema.model.User;
 import GUI.AppColors;
 import GUI.Screen;
 import GUI.SharedComponents.AppBar;

@@ -1,9 +1,9 @@
 package GUI.Screens;
 
-import Cinema.Objects.Hall;
-import Cinema.Objects.Movie;
-import Cinema.Objects.Ticket;
-import Cinema.Objects.User;
+import cinema.model.Hall;
+import cinema.model.Movie;
+import cinema.model.Ticket;
+import cinema.model.User;
 import GUI.AppColors;
 import GUI.Screen;
 import GUI.SharedComponents.*;
@@ -87,7 +87,11 @@ public class SingleMovieScreen extends Screen {
                 else price = 100;
                 totalPrice += price;
                 Ticket ticket = new Ticket(User.loggedInUserId, movie.id, seat, price, selectDate.getDate(), showingComboBox.getSelectedItem().toString());
-                ticket.save();
+                try{
+                    ticket.save();
+                }catch (Exception error){
+                   error.printStackTrace();
+                }
             }
             this.refresh();
             this.navigateTo(new ViewTicketScreen(this, movie, selectedSeats, totalPrice, selectDate.getDate() , showingComboBox.getSelectedItem().toString()));

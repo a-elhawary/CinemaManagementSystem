@@ -1,4 +1,4 @@
-package Cinema.Objects;
+package cinema.exceptions;
 
 public class InvalidMonthNameException extends RuntimeException{
     public InvalidMonthNameException(String monthName){

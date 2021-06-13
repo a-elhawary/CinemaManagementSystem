@@ -1,4 +1,7 @@
-package Cinema.Objects;
+package cinema.model;
+
+import cinema.exceptions.BlankDataEnteredException;
+import cinema.helper.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -35,8 +38,8 @@ public class Ticket extends Model{
         this.showing = showing;
     }
 
-    public boolean save(){
-        if(this.seat_number.isEmpty() || this.showing.isEmpty()) return false;
+    public void save() throws BlankDataEnteredException{
+        if(this.seat_number.isEmpty() || this.showing.isEmpty()) throw new BlankDataEnteredException();
         try{
             Connection c = Database.getCon();
             PreparedStatement insert = c.prepareStatement("insert into Tickets Values (default,?,?,?,?,?,?)");
@@ -47,11 +50,9 @@ public class Ticket extends Model{
             insert.setDate(5, date);
             insert.setString(6 ,showing);
             insert.execute();
-            return true;
         }catch(Exception e){
             e.printStackTrace();
         }
-        return false;
     }
     public static ArrayList<Ticket> getTicketsBy(int movieId, Date choosenDate, String choosenShowing){
         ArrayList<Ticket> tickets = new ArrayList<Ticket>();

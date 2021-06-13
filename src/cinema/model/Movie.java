@@ -1,4 +1,7 @@
-package Cinema.Objects;
+package cinema.model;
+
+import cinema.exceptions.BlankDataEnteredException;
+import cinema.helper.Database;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -6,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 
 public class Movie extends Model{
     public String name;
@@ -56,8 +60,8 @@ public class Movie extends Model{
         this.hallId = hallId;
     }
 
-    public boolean save(){
-        if(this.name.isEmpty() || this.description.isEmpty() || this.image == null || startDate == null || endDate == null) return false;
+    public void save() throws BlankDataEnteredException {
+        if(this.name.isEmpty() || this.description.isEmpty() || this.image == null || startDate == null || endDate == null) throw new BlankDataEnteredException();
         try{
             Connection c = Database.getCon();
             PreparedStatement insert = c.prepareStatement("insert into Movies Values (default, ?,0,?,?,?,?,?)");
@@ -68,11 +72,9 @@ public class Movie extends Model{
             insert.setDate(5, endDate);
             insert.setInt(6, hallId);
             insert.execute();
-            return true;
        }catch(Exception e){
            e.printStackTrace();
        }
-       return false;
     }
 
     public static ArrayList<Movie> getMovies(){

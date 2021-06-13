@@ -1,6 +1,6 @@
 package GUI.Screens.Admin;
 
-import Cinema.Objects.Ticket;
+import cinema.model.Ticket;
 import GUI.AppColors;
 
 import javax.swing.*;

@@ -1,8 +1,8 @@
 package GUI.SharedComponents;
 
-import Cinema.Objects.Level;
-import Cinema.Objects.Ticket;
-import Cinema.Objects.User;
+import cinema.enums.Level;
+import cinema.model.Ticket;
+import cinema.model.User;
 import GUI.AppColors;
 import GUI.Screen;
 import GUI.Screens.Admin.AdminScreen;

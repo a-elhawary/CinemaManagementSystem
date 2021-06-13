@@ -1,4 +1,4 @@
-package Cinema.Objects;
+package cinema.helper;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

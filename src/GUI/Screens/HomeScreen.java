@@ -1,6 +1,6 @@
 package GUI.Screens;
 
-import Cinema.Objects.Movie;
+import cinema.model.Movie;
 import GUI.AppColors;
 import GUI.Screen;
 import GUI.SharedComponents.AppBar;

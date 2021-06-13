@@ -1,4 +1,6 @@
-package Cinema.Objects;
+package cinema.model;
+
+import cinema.helper.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

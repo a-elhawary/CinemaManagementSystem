@@ -1,7 +1,7 @@
 package GUI.Screens.Admin;
 
-import Cinema.Objects.Level;
-import Cinema.Objects.User;
+import cinema.enums.Level;
+import cinema.model.User;
 import GUI.AppColors;
 import GUI.SharedComponents.LabeledField;
 
@@ -60,7 +60,11 @@ public class AddCashierPanel extends JPanel {
         addMovie.setBorderPainted(false);
         addMovie.addActionListener(e -> {
             User user = new User(firstNameField.textField.getText(), lastNameField.textField.getText(), userNameField.textField.getText(), passwordField.textField.getText(), confirmPasswordField.textField.getText());
-            errorLabel.setText(user.register(Level.CASHIER));
+            try{
+               user.register(Level.CASHIER);
+            }catch (Exception error){
+                errorLabel.setText(error.getMessage());
+            }
             firstNameField.textField.setText("");
             lastNameField.textField.setText("");
             userNameField.textField.setText("");

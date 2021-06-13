@@ -1,6 +1,7 @@
 package GUI.Screens.Admin;
 
-import Cinema.Objects.Hall;
+import cinema.exceptions.BlankDataEnteredException;
+import cinema.model.Hall;
 import GUI.AppColors;
 import GUI.SharedComponents.LabeledField;
 
@@ -49,11 +50,14 @@ public class AddHallPanel extends JPanel {
         addMovie.setOpaque(true);
         addMovie.setBorderPainted(false);
         addMovie.addActionListener(e -> {
-            Hall currentHall = new Hall(nameField.textField.getText(), Integer.parseInt(descriptionField.textField.getText()));
-            if(!currentHall.save()){
-                errorLabel.setText("Please Enter all Data");
-            }else{
+            try {
+                Hall currentHall = new Hall(nameField.textField.getText(), Integer.parseInt(descriptionField.textField.getText()));
+                currentHall.save();
                 errorLabel.setText("");
+            }catch (BlankDataEnteredException error){
+                errorLabel.setText(error.getMessage());
+            }catch (NumberFormatException error){
+                errorLabel.setText("Seats Number must be a Number");
             }
             nameField.textField.setText("");
             descriptionField.textField.setText("");

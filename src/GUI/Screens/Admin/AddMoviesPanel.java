@@ -1,9 +1,8 @@
 package GUI.Screens.Admin;
 
-import Cinema.Objects.Database;
-import Cinema.Objects.Hall;
-import Cinema.Objects.Months;
-import Cinema.Objects.Movie;
+import cinema.model.Hall;
+import cinema.helper.Months;
+import cinema.model.Movie;
 import GUI.AppColors;
 import GUI.SharedComponents.DatePicker;
 import GUI.SharedComponents.LabeledField;
@@ -12,10 +11,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.sql.Date;
 import java.util.ArrayList;
 
 public class AddMoviesPanel extends JPanel {
@@ -114,10 +110,11 @@ public class AddMoviesPanel extends JPanel {
         addMovie.setBorderPainted(false);
         addMovie.addActionListener(e -> {
             Movie currentMovie = new Movie(nameField.textField.getText(), descriptionField.textField.getText(), selectedFile,startDate.getDate(), endDate.getDate(), halls.get(comboBox.getSelectedIndex()).id);
-            if(!currentMovie.save()){
-               errorLabel.setText("Please enter all Data");
-            }else{
+            try{
+                currentMovie.save();
                 errorLabel.setText("");
+            }catch (Exception error){
+                errorLabel.setText(error.getMessage());
             }
             nameField.textField.setText("");
             descriptionField.textField.setText("");

@@ -1,4 +1,11 @@
-package Cinema.Objects;
+package cinema.model;
+
+import cinema.exceptions.BlankDataEnteredException;
+import cinema.exceptions.PasswordsMustMatchException;
+import cinema.exceptions.UserNotFoundException;
+import cinema.exceptions.UsernameExistsException;
+import cinema.helper.Database;
+import cinema.enums.Level;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,38 +44,40 @@ public class User extends Model{
         this.password = password;
     }
 
-    public String register(Level level){
-        if( firstName.isEmpty() || lastName.isEmpty() || userName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){ return "Fill in All Data";}
+    public void register(Level level) throws BlankDataEnteredException, UsernameExistsException, PasswordsMustMatchException {
+        if( firstName.isEmpty() || lastName.isEmpty() || userName.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){ throw new BlankDataEnteredException();}
+        int rowCount = 0;
         try{
-           Connection c = Database.getCon();
-           PreparedStatement s = c.prepareStatement("Select user_name from Users where user_name = ?");
-           s.setString(1, userName);
-           ResultSet r = s.executeQuery();
-           int rowCount = 0;
-           while(r.next()){
-               rowCount++;
-           }
-
-           if(rowCount != 0) return "Username Already Exists!";
-
-           if(!password.equals(confirmPassword)) return "Passwords Don't Match";
-           PreparedStatement insert = c.prepareStatement("insert into Users values (default, ?, ?, ?, ?, ?)");
-           insert.setString(1, firstName);
-           insert.setString(2, lastName);
-           insert.setString(3, userName);
-           insert.setString(4, password);
-           insert.setInt(5, level.ordinal());
-           insert.execute();
-           loggedInUserLevel = level;
+            Connection c = Database.getCon();
+            PreparedStatement s = c.prepareStatement("Select user_name from Users where user_name = ?");
+            s.setString(1, userName);
+            ResultSet r = s.executeQuery();
+            while(r.next()){
+                rowCount++;
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
-        return "";
+        if(rowCount != 0){ throw new UsernameExistsException(); }
+        if(!password.equals(confirmPassword)){ throw new PasswordsMustMatchException();}
+        try {
+            Connection c = Database.getCon();
+            PreparedStatement insert = c.prepareStatement("insert into Users values (default, ?, ?, ?, ?, ?)");
+            insert.setString(1, firstName);
+            insert.setString(2, lastName);
+            insert.setString(3, userName);
+            insert.setString(4, password);
+            insert.setInt(5, level.ordinal());
+            insert.execute();
+            loggedInUserLevel = level;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    public boolean login(){
+    public void login() throws BlankDataEnteredException, UserNotFoundException{
         boolean state = false;
-        if(userName.isEmpty() || password.isEmpty()){ return false;}
+        if(userName.isEmpty() || password.isEmpty()){ throw new BlankDataEnteredException();}
         try{
             Connection c = Database.getCon();
             PreparedStatement s = c.prepareStatement("Select * from Users WHERE user_name = ?");
@@ -84,7 +93,7 @@ public class User extends Model{
         }catch (Exception e){
             e.printStackTrace();
         }
-        return state;
+        if(!state) throw new UserNotFoundException();
     }
 
     public static ArrayList<User> getCashiers(){

@@ -1,4 +1,4 @@
-package Cinema.Objects;
+package cinema.enums;
 
 public enum Level {
     CUSTOMER,
