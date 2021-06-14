@@ -19,8 +19,8 @@ public class SingleMovie extends JPanel {
         whiteContainer.setBackground(Color.white);
         whiteContainer.setBorder(new EmptyBorder(0,0,10,0));
 
-        ImageIcon image = ImageHandler.scaleImage(new ImageIcon(movie.imageData), (int)(GUI.Window.width * 0.2));
-        JLabel label = new JLabel(movie.name);
+        ImageIcon image = ImageHandler.scaleImage(new ImageIcon(movie.getImageData()), (int)(GUI.Window.width * 0.2));
+        JLabel label = new JLabel(movie.getName());
         label.setIcon(image);
         label.setHorizontalTextPosition(JLabel.CENTER);
         label.setVerticalTextPosition(JLabel.BOTTOM);

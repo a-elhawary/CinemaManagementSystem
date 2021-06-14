@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Ticket extends Model{
-    public int userId;
-    public int movieId;
-    public String seat_number;
-    public double price;
-    public Date date;
-    public String showing;
+    private int userId;
+    private int movieId;
+    private String seat_number;
+    private double price;
+    private Date date;
+    private String showing;
 
     public Ticket(int id) {
         super("Tickets", id);
@@ -104,5 +104,28 @@ public class Ticket extends Model{
             e.printStackTrace();
         }
         return tickets;
+    }
+
+    public int getMovieId() {
+        return movieId;
+    }
+    public double getPrice() {
+        return price;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public String getSeatNumber() {
+        return seat_number;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getShowing() {
+        return showing;
     }
 }

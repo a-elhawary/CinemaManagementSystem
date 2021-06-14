@@ -43,7 +43,7 @@ public class ViewHallsPanel extends JPanel {
         scrollContainer.setBackground(AppColors.grey);
 
         for(Hall hall : halls){
-            JLabel titleLabel = new JLabel("Hall " + hall.name);
+            JLabel titleLabel = new JLabel("Hall " + hall.getName());
             titleLabel.setForeground(AppColors.primary);
             titleLabel.setBorder(new EmptyBorder(0,10,0,0));
 
@@ -65,7 +65,7 @@ public class ViewHallsPanel extends JPanel {
                 this.repaint();
             });
             buttonContainer.add(deleteBtn);
-            JComponent[] data = {titleLabel,new JLabel(String.valueOf(hall.seatsNumber)), buttonContainer};
+            JComponent[] data = {titleLabel,new JLabel(String.valueOf(hall.getSeatsNumber())), buttonContainer};
             scrollContainer.add(new SingleRow(data));
         }
 

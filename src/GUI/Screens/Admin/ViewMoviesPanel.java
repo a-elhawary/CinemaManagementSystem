@@ -43,7 +43,7 @@ public class ViewMoviesPanel extends JPanel {
         scrollContainer.setBackground(AppColors.grey);
 
         for(Movie movie : movies){
-            JLabel titleLabel = new JLabel(movie.name);
+            JLabel titleLabel = new JLabel(movie.getName());
             titleLabel.setForeground(AppColors.primary);
             titleLabel.setBorder(new EmptyBorder(0,10,0,0));
 
@@ -65,7 +65,7 @@ public class ViewMoviesPanel extends JPanel {
                 this.repaint();
             });
             buttonContainer.add(deleteBtn);
-            JComponent[] data = {titleLabel,new JLabel(movie.description), buttonContainer};
+            JComponent[] data = {titleLabel,new JLabel(movie.getDescription()), buttonContainer};
             scrollContainer.add(new SingleRow(data));
         }
 

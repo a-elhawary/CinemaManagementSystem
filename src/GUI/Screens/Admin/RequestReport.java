@@ -15,7 +15,7 @@ public class RequestReport extends JPanel {
         int numOfTickets = 0;
         double averageRevenuePerTicket = 0;
         for(Ticket ticket : tickets){
-            totalRevenue += ticket.price;
+            totalRevenue += ticket.getPrice();
             numOfTickets += 1;
         }
         averageRevenuePerTicket = totalRevenue / numOfTickets;

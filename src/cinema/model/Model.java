@@ -7,11 +7,15 @@ import java.sql.PreparedStatement;
 
 public class Model {
     protected String table_name;
-    public int id;
+    protected int id;
 
     public Model(String table_name,int id){
        this.table_name = table_name;
        this.id = id;
+    }
+
+    public int getId(){
+        return this.id;
     }
 
     public void delete() {

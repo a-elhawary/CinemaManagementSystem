@@ -14,14 +14,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class User extends Model{
-    static public int loggedInUserId;
-    static public Level loggedInUserLevel;
+    static private int loggedInUserId;
+    static private Level loggedInUserLevel;
 
-    public String firstName;
-    public String lastName;
-    public String userName;
-    public String password;
-    String confirmPassword;
+    private String firstName;
+    private String lastName;
+    private String userName;
+    private String password;
+    private String confirmPassword;
 
     public User(String userName, String password){
         super("Users", 0);
@@ -111,5 +111,25 @@ public class User extends Model{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static int getLoggedInUserId() {
+        return loggedInUserId;
+    }
+
+    public static Level getLoggedInUserLevel() {
+        return loggedInUserLevel;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 }

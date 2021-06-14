@@ -10,8 +10,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class Hall extends Model{
-    public String name;
-    public int seatsNumber;
+    private String name;
+    private int seatsNumber;
 
     public Hall(int id){
         super("Halls", id);
@@ -90,4 +90,11 @@ public class Hall extends Model{
         return null;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getSeatsNumber() {
+        return seatsNumber;
+    }
 }

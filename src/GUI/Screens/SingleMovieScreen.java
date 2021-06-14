@@ -33,15 +33,15 @@ public class SingleMovieScreen extends Screen {
         sideBar.setBackground(AppColors.grey);
         sideBar.setBorder(new EmptyBorder(20,20,20,20));
 
-        ImageIcon image = ImageHandler.scaleImage(new ImageIcon(movie.imageData), (int)(GUI.Window.width * 0.2));
-        JLabel movieTitle = new JLabel(movie.name);
+        ImageIcon image = ImageHandler.scaleImage(new ImageIcon(movie.getImageData()), (int)(GUI.Window.width * 0.2));
+        JLabel movieTitle = new JLabel(movie.getName());
         movieTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         movieTitle.setForeground(AppColors.primary);
         movieTitle.setIcon(image);
         movieTitle.setHorizontalTextPosition(JLabel.CENTER);
         movieTitle.setVerticalTextPosition(JLabel.BOTTOM);
 
-        selectDate = new DatePicker("Date:", movie.startDate, movie.endDate);
+        selectDate = new DatePicker("Date:", movie.getStartDate(), movie.getEndDate());
 
         JPanel showingPicker = new JPanel();
         showingPicker.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -86,7 +86,7 @@ public class SingleMovieScreen extends Screen {
                 else if(seat.charAt(0) == 'B') price = 80;
                 else price = 100;
                 totalPrice += price;
-                Ticket ticket = new Ticket(User.loggedInUserId, movie.id, seat, price, selectDate.getDate(), showingComboBox.getSelectedItem().toString());
+                Ticket ticket = new Ticket(User.getLoggedInUserId(), movie.getId(), seat, price, selectDate.getDate(), showingComboBox.getSelectedItem().toString());
                 try{
                     ticket.save();
                 }catch (Exception error){
@@ -112,10 +112,10 @@ public class SingleMovieScreen extends Screen {
     }
 
     public JPanel buildSeatChart(Date choosenDate,String choosenShowing){
-        ArrayList<Ticket> reservedSeats = Ticket.getTicketsBy(movie.id, choosenDate, choosenShowing);
-        int hallSize = Hall.getHallById(movie.hallId).seatsNumber;
-        String names[] = {"A", "B", "C", "D"};
-        double ratios[] = {6, 3, 6, 3};
+        ArrayList<Ticket> reservedSeats = Ticket.getTicketsBy(movie.getId(), choosenDate, choosenShowing);
+        int hallSize = Hall.getHallById(movie.getHallId()).getSeatsNumber();
+        String[] names = {"A", "B", "C", "D"};
+        double[] ratios = {6, 3, 6, 3};
 
         JPanel mainContainer = new JPanel();
         mainContainer.setBackground(Color.white);
@@ -156,7 +156,7 @@ public class SingleMovieScreen extends Screen {
                     label = names[i] + j;
                 }
                 for(Ticket seat: reservedSeats){
-                    if(label.equals(seat.seat_number)){
+                    if(label.equals(seat.getSeatNumber())){
                        isReserved = true;
                        break;
                     }

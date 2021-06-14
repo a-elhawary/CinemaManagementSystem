@@ -9,17 +9,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 
 public class Movie extends Model{
-    public String name;
-    public String description;
-    File image;
-    public BufferedImage imageData;
-    public double rating;
-    public Date startDate;
-    public Date endDate;
-    public int hallId;
+    private String name;
+    private String description;
+    private File image;
+    private BufferedImage imageData;
+    private double rating;
+    private Date startDate;
+    private Date endDate;
+    private int hallId;
 
     public Movie(int id){
         super("Movies", id);
@@ -109,5 +108,37 @@ public class Movie extends Model{
             e.printStackTrace();
         }
         return null;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public File getImage() {
+        return image;
+    }
+
+    public BufferedImage getImageData() {
+        return imageData;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public int getHallId() {
+        return hallId;
     }
 }

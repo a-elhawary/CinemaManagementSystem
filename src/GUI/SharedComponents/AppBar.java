@@ -58,7 +58,7 @@ public class AppBar extends JPanel {
         logoutButton.setBorderPainted(false);
         logoutButton.setForeground(AppColors.primary);
         logoutButton.setBackground(Color.white);
-        if(!(parent instanceof AdminScreen) && User.loggedInUserLevel == Level.ADMIN){
+        if(!(parent instanceof AdminScreen) && User.getLoggedInUserLevel() == Level.ADMIN){
             JButton adminButton = new JButton();
             adminButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             adminButton.setText("Admin Panel");
@@ -72,7 +72,7 @@ public class AppBar extends JPanel {
 
             rightContainer.add(adminButton);
         }
-        if(parent instanceof HomeScreen && User.loggedInUserLevel == Level.CASHIER){
+        if(parent instanceof HomeScreen && User.getLoggedInUserLevel() == Level.CASHIER){
             JTextField ticketId = new JTextField();
             ticketId.setColumns(20);
             JButton verifyTicket = new JButton();

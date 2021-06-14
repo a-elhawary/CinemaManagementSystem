@@ -43,7 +43,7 @@ public class ViewCashiersPanel extends JPanel {
         scrollContainer.setBackground(AppColors.grey);
 
         for(User cashier : cashiers){
-            JLabel titleLabel = new JLabel(String.valueOf(cashier.id));
+            JLabel titleLabel = new JLabel(String.valueOf(cashier.getId()));
             titleLabel.setForeground(AppColors.primary);
             titleLabel.setBorder(new EmptyBorder(0,10,0,0));
 
@@ -65,7 +65,7 @@ public class ViewCashiersPanel extends JPanel {
                 this.repaint();
             });
             buttonContainer.add(deleteBtn);
-            JComponent[] data = {titleLabel,new JLabel(cashier.firstName), buttonContainer};
+            JComponent[] data = {titleLabel,new JLabel(cashier.getFirstName()), new JLabel(cashier.getLastName()), new JLabel(cashier.getUserName()), buttonContainer};
             scrollContainer.add(new SingleRow(data));
         }
 

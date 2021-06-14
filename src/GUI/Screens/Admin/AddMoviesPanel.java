@@ -23,7 +23,7 @@ public class AddMoviesPanel extends JPanel {
         ArrayList<Hall> halls = Hall.getHalls();
         String[] hallNames = new String[halls.size()];
         for(int i = 0; i < halls.size(); i++){
-            hallNames[i] = halls.get(i).name;
+            hallNames[i] = halls.get(i).getName();
         }
         String[] days = Months.getDaysArray(Months.names[0]);
         JLabel title = new JLabel("Add Movie");
@@ -109,7 +109,7 @@ public class AddMoviesPanel extends JPanel {
         addMovie.setOpaque(true);
         addMovie.setBorderPainted(false);
         addMovie.addActionListener(e -> {
-            Movie currentMovie = new Movie(nameField.textField.getText(), descriptionField.textField.getText(), selectedFile,startDate.getDate(), endDate.getDate(), halls.get(comboBox.getSelectedIndex()).id);
+            Movie currentMovie = new Movie(nameField.textField.getText(), descriptionField.textField.getText(), selectedFile,startDate.getDate(), endDate.getDate(), halls.get(comboBox.getSelectedIndex()).getId());
             try{
                 currentMovie.save();
                 errorLabel.setText("");

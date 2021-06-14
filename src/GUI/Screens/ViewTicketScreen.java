@@ -21,7 +21,7 @@ public class ViewTicketScreen extends Screen {
         this.setLayout(new BorderLayout());
         AppBar topBar = new AppBar(this);
         this.add(topBar, BorderLayout.NORTH);
-        if(User.loggedInUserLevel == Level.CASHIER){
+        if(User.getLoggedInUserLevel() == Level.CASHIER){
             JPanel mainContainer = new JPanel();
             mainContainer.setBackground(AppColors.grey);
             mainContainer.setLayout(new GridBagLayout());
@@ -53,8 +53,8 @@ public class ViewTicketScreen extends Screen {
             ticketDetails.add(priceLabel);
 
             JLabel movieDetails = new JLabel();
-            movieDetails.setIcon(ImageHandler.scaleImage(new ImageIcon(movie.imageData), 100));
-            movieDetails.setText(movie.name);
+            movieDetails.setIcon(ImageHandler.scaleImage(new ImageIcon(movie.getImageData()), 100));
+            movieDetails.setText(movie.getName());
             movieDetails.setHorizontalTextPosition(JLabel.CENTER);
             movieDetails.setVerticalTextPosition(JLabel.BOTTOM);
 
@@ -87,7 +87,7 @@ public class ViewTicketScreen extends Screen {
             whiteContainer.add(label);
             whiteContainer.add(new JLabel("Please note this id as you will need it in Cinema"));
 
-            String ticketId = User.loggedInUserId + "-" + movie.id  + "-" + selectedDate.getTime() + "-" + showing;
+            String ticketId = User.getLoggedInUserId() + "-" + movie.getId()  + "-" + selectedDate.getTime() + "-" + showing;
             JTextPane f = new JTextPane();
             f.setContentType("text/html"); // let the text pane know this is what you want
             f.setEditable(false); // as before
@@ -122,12 +122,11 @@ public class ViewTicketScreen extends Screen {
 
         double totalPrice = 0;
         String seats = "";
-        System.out.println(tickets.get(0).movieId);
-        Movie movie = Movie.getMovieBy(tickets.get(0).movieId);
+        Movie movie = Movie.getMovieBy(tickets.get(0).getMovieId());
 
         for(Ticket ticket : tickets){
-            totalPrice += ticket.price;
-            seats += ticket.seat_number;
+            totalPrice += ticket.getPrice();
+            seats += ticket.getSeatNumber();
             seats += ",";
         }
 
@@ -143,8 +142,8 @@ public class ViewTicketScreen extends Screen {
         ticketDetails.add(priceLabel);
 
         JLabel movieDetails = new JLabel();
-        movieDetails.setIcon(ImageHandler.scaleImage(new ImageIcon(movie.imageData), 100));
-        movieDetails.setText(movie.name);
+        movieDetails.setIcon(ImageHandler.scaleImage(new ImageIcon(movie.getImageData()), 100));
+        movieDetails.setText(movie.getName());
         movieDetails.setHorizontalTextPosition(JLabel.CENTER);
         movieDetails.setVerticalTextPosition(JLabel.BOTTOM);
 
