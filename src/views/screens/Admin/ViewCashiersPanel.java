@@ -7,7 +7,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class ViewCashiersPanel extends JPanel {
+public class ViewCashiersPanel extends Panel {
 
     JPanel mainContainer;
     AdminScreenController controller;
@@ -42,5 +42,13 @@ public class ViewCashiersPanel extends JPanel {
 
     public void setMainContainer(JPanel mainContainer) {
         this.mainContainer = mainContainer;
+    }
+
+    public void refresh(){
+        this.remove(mainContainer);
+        mainContainer = buildMainContainer();
+        this.add(mainContainer);
+        this.revalidate();
+        this.repaint();
     }
 }

@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ViewMoviesPanel extends JPanel {
+public class ViewMoviesPanel extends Panel {
 
     ArrayList<Movie> movies;
     JPanel mainContainer;
@@ -83,6 +83,15 @@ public class ViewMoviesPanel extends JPanel {
         scroll.setBorder(null);
         mainContainer.add(scroll, BorderLayout.CENTER);
         return mainContainer;
+    }
+
+    public void refresh(){
+        movies = Movie.getMovies();
+        this.remove(mainContainer);
+        mainContainer = buildMainContainer();
+        this.add(mainContainer);
+        this.revalidate();
+        this.repaint();
     }
 
 }

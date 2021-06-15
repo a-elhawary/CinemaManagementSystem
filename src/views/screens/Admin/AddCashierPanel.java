@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class AddCashierPanel extends JPanel {
+public class AddCashierPanel extends Panel {
     LabeledField firstNameField;
     LabeledField lastNameField;
     LabeledField userNameField;
@@ -105,5 +105,11 @@ public class AddCashierPanel extends JPanel {
 
     public void showErrorMessage(String msg){
         errorLabel.setText(msg);
+    }
+
+    public void refresh(){
+        blankOutFields();
+        this.revalidate();
+        this.repaint();
     }
 }

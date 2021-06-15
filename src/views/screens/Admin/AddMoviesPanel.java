@@ -15,7 +15,7 @@ import java.awt.*;
 import java.io.File;
 import java.sql.Date;
 
-public class AddMoviesPanel extends JPanel {
+public class AddMoviesPanel extends Panel {
     File selectedFile;
     JLabel errorLabel;
     DatePicker startDate;
@@ -26,8 +26,10 @@ public class AddMoviesPanel extends JPanel {
     JButton chooseFile;
     LabeledField descriptionField;
     LabeledField nameField;
+    AdminScreenController controller;
 
     public AddMoviesPanel(AdminScreenController controller){
+        this.controller = controller;
         this.setLayout(new BorderLayout());
         this.setBackground(Color.white);
 
@@ -166,6 +168,18 @@ public class AddMoviesPanel extends JPanel {
 
     public void showErrorMessage(String msg){
        errorLabel.setText(msg);
+    }
+
+    public void refresh(){
+        comboBox.removeAllItems();
+        for(String hall: controller.getHallNames()){
+            comboBox.addItem(hall);
+        }
+        comboBox.revalidate();
+        comboBox.repaint();
+        blankOutFields();
+        this.revalidate();
+        this.repaint();
     }
 }
 

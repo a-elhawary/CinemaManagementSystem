@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class AddHallPanel extends JPanel {
+public class AddHallPanel extends Panel {
 
     JLabel errorLabel;
     LabeledField nameField;
@@ -79,5 +79,11 @@ public class AddHallPanel extends JPanel {
     public void blankOutFields(){
         nameField.textField.setText("");
         descriptionField.textField.setText("");
+    }
+
+    public void refresh(){
+        blankOutFields();
+        this.revalidate();
+        this.repaint();
     }
 }

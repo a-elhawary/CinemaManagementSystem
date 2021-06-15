@@ -10,7 +10,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ViewHallsPanel extends JPanel {
+public class ViewHallsPanel extends Panel {
 
     ArrayList<Hall> halls;
     JPanel mainContainer;
@@ -85,4 +85,12 @@ public class ViewHallsPanel extends JPanel {
         return mainContainer;
     }
 
+    public void refresh(){
+        halls = Hall.getHalls();
+        this.remove(mainContainer);
+        mainContainer = buildMainContainer();
+        this.add(mainContainer);
+        this.revalidate();
+        this.repaint();
+    }
 }

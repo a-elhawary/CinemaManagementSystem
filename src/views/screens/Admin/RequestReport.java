@@ -9,7 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class RequestReport extends JPanel {
+public class RequestReport extends Panel {
     public RequestReport(AdminScreenController controller){
         ArrayList<Ticket> tickets = Ticket.getTickets();
         double totalRevenue = 0;
@@ -37,4 +37,6 @@ public class RequestReport extends JPanel {
         whiteContainer.add(new JLabel("Average Price per Ticker: " + averageRevenuePerTicket));
         this.add(whiteContainer);
     }
+
+    public void refresh(){}
 }

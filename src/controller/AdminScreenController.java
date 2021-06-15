@@ -25,6 +25,7 @@ public class AdminScreenController {
     }
 
     public String[] getHallNames(){
+        halls = Hall.getHalls();
         String[] hallNames = new String[halls.size()];
         for(int i = 0; i < halls.size(); i++){
             hallNames[i] = halls.get(i).getName();

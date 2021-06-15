@@ -4,11 +4,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class Database {
+    /*
     private static final String DATABASE_HOST = "206.81.8.63";
     private static final String DATABASE_NAME = "Cinema";
     private static final String DATABASE_PORT = "3306";
     private static final String DATABASE_USER = "remote";
     private static final String DATABASE_PASS = "gfIIb100%s";
+     */
+    private static final String DATABASE_HOST = "127.0.0.1";
+    private static final String DATABASE_NAME = "Cinema";
+    private static final String DATABASE_PORT = "8889";
+    private static final String DATABASE_USER = "root";
+    private static final String DATABASE_PASS = "root";
 
     public static Connection getCon(){
        try {

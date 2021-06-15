@@ -13,13 +13,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdminScreen extends Screen {
-    JPanel panels[];
+    Panel panels[];
     AdminScreenController controller;
     int selectedIndex = 0;
     public AdminScreen(Window parentWindow, Screen previousScreen) {
         super(parentWindow, previousScreen);
         controller = new AdminScreenController(this);
-        JPanel tmp[] = {new ViewMoviesPanel(controller), new AddMoviesPanel(controller),new ViewCashiersPanel(controller), new AddCashierPanel(controller), new ViewHallsPanel(controller), new AddHallPanel(controller), new RequestReport(controller)};
+        Panel tmp[] = {new ViewMoviesPanel(controller), new AddMoviesPanel(controller),new ViewCashiersPanel(controller), new AddCashierPanel(controller), new ViewHallsPanel(controller), new AddHallPanel(controller), new RequestReport(controller)};
         panels = tmp;
         String actions[] = {"View Movies", "Add Movie", "View Cashiers", "Add Cashier", "View Halls", "Add Hall", "Request Report"};
 
@@ -77,9 +77,10 @@ public class AdminScreen extends Screen {
 
     @Override
     public void refresh() {
+        this.getPanel().refresh();
     }
 
-    public JPanel getPanel(){
+    public Panel getPanel(){
         return panels[selectedIndex];
     }
 }
@@ -102,6 +103,7 @@ class ChangePanelActionListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
        this.container.removeAll();
        this.screen.setSelectedIndex(index);
+       screen.getPanel().refresh();
        this.container.add(panel);
        this.container.revalidate();
        this.container.repaint();
