@@ -1,7 +1,7 @@
 package views.screens.Admin;
 
+import views.sharedcomponents.Refreshable;
+
 import javax.swing.*;
 
-public abstract class Panel extends JPanel {
-   public abstract void refresh();
-}
+public abstract class Panel extends JPanel implements Refreshable { }

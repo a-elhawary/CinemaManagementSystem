@@ -1,8 +1,10 @@
 package views;
 
+import views.sharedcomponents.Refreshable;
+
 import javax.swing.*;
 
-public abstract class Screen extends JPanel {
+public abstract class Screen extends JPanel implements Refreshable {
     public Window parentWindow;
     public Screen previousScreen;
 
@@ -14,6 +16,4 @@ public abstract class Screen extends JPanel {
     public void navigateTo(Screen newScreen){
        parentWindow.swap(this, newScreen);
     }
-
-    public abstract void refresh();
 }
