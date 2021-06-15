@@ -62,7 +62,7 @@ public class User extends Model{
         if(!password.equals(confirmPassword)){ throw new PasswordsMustMatchException();}
         try {
             Connection c = Database.getCon();
-            PreparedStatement insert = c.prepareStatement("insert into Users values (default, ?, ?, ?, ?, ?)");
+            PreparedStatement insert = c.prepareStatement("insert into Users values (default, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             insert.setString(1, firstName);
             insert.setString(2, lastName);
             insert.setString(3, userName);
@@ -70,6 +70,10 @@ public class User extends Model{
             insert.setInt(5, level.ordinal());
             insert.execute();
             loggedInUserLevel = level;
+            ResultSet generatedKeys = insert.getGeneratedKeys();
+            while(generatedKeys.next()){
+                loggedInUserId  = generatedKeys.getInt(1);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -96,12 +100,13 @@ public class User extends Model{
         if(!state) throw new UserNotFoundException();
     }
 
-    public static ArrayList<User> getCashiers(){
+
+    public static ArrayList<User> getUsersWithLevel(Level level){
         ArrayList<User> users = new ArrayList<User>();
         try {
             Connection c = Database.getCon();
             Statement s = c.createStatement();
-            ResultSet r = s.executeQuery("select * from Users where level = 1");
+            ResultSet r = s.executeQuery("select * from Users where level = " + level.ordinal());
             while(r.next()){
                 User currentUser = new User(r.getInt("id"), r.getString("first_name"), r.getString("last_name"), r.getString("user_name"),r.getString("password"));
                 users.add(currentUser);

@@ -76,7 +76,7 @@ public class AdminScreenController {
     }
 
     public JScrollPane generateCashiersList(ViewCashiersPanel panel){
-        ArrayList<User> cashiers = User.getCashiers();
+        ArrayList<User> cashiers = User.getUsersWithLevel(Level.CASHIER);
         JPanel scrollContainer = new JPanel();
         GridLayout grid = new GridLayout(0,1);
         grid.setVgap(8);
